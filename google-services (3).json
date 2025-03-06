@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "1078503918534",
+    "firebase_url": "https://phonetracker-96ce1-default-rtdb.firebaseio.com",
+    "project_id": "phonetracker-96ce1",
+    "storage_bucket": "phonetracker-96ce1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078503918534:android:0e0a2a2d6d31d2aefc00c7",
+        "android_client_info": {
+          "package_name": "com.mateworld.androidphonetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAchrJ5EuGwqHvTYuLjx18ZsZ-7IgI46PE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078503918534:android:56507a133ed321dafc00c7",
+        "android_client_info": {
+          "package_name": "com.mateworld.phonetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAchrJ5EuGwqHvTYuLjx18ZsZ-7IgI46PE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
