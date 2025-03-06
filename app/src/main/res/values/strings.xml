@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Phone Tracker</string>
+    <string name="start_tracking">Start Tracking</string>
+    <string name="stop_tracking">Stop Tracking</string>
+    <string name="status_active">Tracking Active</string>
+    <string name="status_inactive">Tracking Inactive</string>
+    <string name="permission_required">Location permission is required</string>
+    <string name="background_permission_required">Background location permission is required for tracking</string>
+    <string name="tracking_started">Location tracking started</string>
+    <string name="tracking_stopped">Location tracking stopped</string>
+</resources>
