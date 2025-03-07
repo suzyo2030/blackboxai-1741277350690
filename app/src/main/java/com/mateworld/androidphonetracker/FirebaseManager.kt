@@ -9,7 +9,7 @@ class FirebaseManager {
     private val database = FirebaseDatabase.getInstance()
     private val locationsRef = database.getReference("locations")
 
-    fun updateLocation(latitude: Double, longitude: Double, timestamp: Long) {
+    fun updateLocation(latitude: Double, longitude: Double, timestamp: Long, dateTime: String) {
         try {
             val locationData = hashMapOf(
                 "latitude" to latitude,
