@@ -60,7 +60,8 @@ class LocationService : Service() {
             .setMaxUpdateDelayMillis(LOCATION_UPDATE_INTERVAL * 2)
             .build()
 
-        try {
+        if (checkLocationPermissions()) {
+            try {
             fusedLocationClient.requestLocationUpdates(
                 locationRequest,
                 locationCallback,
