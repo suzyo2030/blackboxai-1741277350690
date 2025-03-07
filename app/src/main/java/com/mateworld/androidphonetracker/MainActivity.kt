@@ -29,6 +29,15 @@ class MainActivity : AppCompatActivity() {
         setupUI()
     }
 
+    private fun startLocationTracking() {
+        Intent(this, LocationService::class.java).also { intent ->
+            startService(intent)
+            isTracking = true
+            updateTrackingUI()
+            showMessage("Location tracking started")
+        }
+    }
+
     private fun setupUI() {
         binding.btnStartTracking.setOnClickListener {
             if (!isTracking) {
