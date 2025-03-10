@@ -42,12 +42,21 @@ class LocationService : Service() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.lastLocation?.let { location ->
-                    // Upload location to Firebase
+                    // Upload location to Firebase and send broadcast to MainActivity
+                    val dateTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(location.time))
                     firebaseManager.updateLocation(
                         location.latitude,
                         location.longitude,
-                        location.time
+                        location.time,
+                        dateTime
                     )
+
+                    // Send location update to MainActivity
+                    Intent("LOCATION_UPDATE").apply {
+                        putExtra("latitude", location.latitude)
+                        putExtra("longitude", location.longitude)
+                        sendBroadcast(this)
+                    }
                 }
             }
         }
