@@ -6,14 +6,21 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.mateworld.androidphonetracker.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mapView: MapView
+    private lateinit var googleMap: GoogleMap
     private var isTracking = false
 
     companion object {
@@ -26,7 +33,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mapView = binding.mapView
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync(this)
+
         setupUI()
+        
+        // Retrieve current location from Firebase
+        firebaseManager.getCurrentLocation { latitude, longitude ->
+            updateMapLocation(latitude, longitude)
+        }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        this.googleMap = googleMap
+    }
+
+    private fun updateMapLocation(latitude: Double, longitude: Double) {
+        val location = LatLng(latitude, longitude)
+        googleMap.clear()
+        googleMap.addMarker(MarkerOptions().position(location).title("Current Location"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
     }
 
     private fun startLocationTracking() {
@@ -42,13 +69,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnStartTracking.setOnClickListener {
             if (!isTracking) {
                 if (checkLocationPermissions()) {
-                    // Start the location tracking service
-                    Intent(this, LocationService::class.java).also { intent ->
-                        startService(intent)
-                        isTracking = true
-                        updateTrackingUI()
-                        showMessage("Location tracking started")
-                    }
+                    startLocationTracking()
                 } else {
                     requestLocationPermissions()
                 }
@@ -150,5 +171,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun showMessage(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
     }
 }
