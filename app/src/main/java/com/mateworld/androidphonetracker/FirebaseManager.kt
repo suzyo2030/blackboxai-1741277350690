@@ -2,6 +2,9 @@ package com.mateworld.gnssreceivertracker
 
 import android.provider.Settings
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -15,8 +18,7 @@ class FirebaseManager {
                 "latitude" to latitude,
                 "longitude" to longitude,
                 "timestamp" to timestamp,
-                "dateTime" to SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                    .format(Date(timestamp))
+                "dateTime" to dateTime // Use the passed dateTime parameter directly
             )
 
             // Create a unique key for each location update
@@ -34,5 +36,22 @@ class FirebaseManager {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun getCurrentLocation(onLocationReceived: (Double, Double) -> Unit) {
+        locationsRef.limitToLast(1).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (locationSnapshot in snapshot.children) {
+                    val latitude = locationSnapshot.child("latitude").getValue(Double::class.java) ?: 0.0
+                    val longitude = locationSnapshot.child("longitude").getValue(Double::class.java) ?: 0.0
+                    onLocationReceived(latitude, longitude)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle possible errors.
+                error.toException().printStackTrace()
+            }
+        })
     }
 }
