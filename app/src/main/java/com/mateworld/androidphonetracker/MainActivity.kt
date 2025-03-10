@@ -40,8 +40,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setupUI()
         
         // Retrieve current location from Firebase
-        firebaseManager.getCurrentLocation { latitude, longitude ->
+        firebaseManager.getCurrentLocation { latitude, longitude, dateTime ->
             updateMapLocation(latitude, longitude)
+            binding.tvLocation.text = "Lat: $latitude, Lon: $longitude\nUpdated at: $dateTime"
         }
     }
 
